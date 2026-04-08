@@ -13,6 +13,8 @@ import ChaosManifest from './components/Warpstorm/ChaosManifest'
 import OrderAscendant from './components/Warpstorm/OrderAscendant'
 import { TaskStatus } from './types'
 import robeUrl from '../assets/robe.svg'
+import { useGameEvents } from './hooks/useGameEvents'
+import GameEventBanner from './components/Events/GameEventBanner'
 
 interface ToastItem { id: string; message: string; type: 'order' | 'chaos' | 'neutral' }
 
@@ -21,6 +23,7 @@ function AppInner() {
   const importRef = useRef<HTMLInputElement>(null)
   const [toasts, setToasts] = useState<ToastItem[]>([])
   const [chronicleOpen, setChronicleOpen] = useState(false)
+  const gameEvents = useGameEvents(state)
   const keyBuffer = useRef('')
   const lockedRef = useRef(state.locked) as MutableRefObject<boolean>
 
@@ -216,6 +219,18 @@ function AppInner() {
       {/* Modals */}
       <TaskModal />
       <HelpModal />
+
+      {/* Game event banners */}
+      {gameEvents.events.length > 0 && (
+        <div
+          className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-3"
+          style={{ width: 'min(480px, calc(100vw - 48px))' }}
+        >
+          {gameEvents.events.map(evt => (
+            <GameEventBanner key={evt.id} event={evt} onDismiss={gameEvents.dismiss} />
+          ))}
+        </div>
+      )}
 
       {/* Toast notifications */}
       <ToastContainer toasts={toasts} onDismiss={dismissToast} />

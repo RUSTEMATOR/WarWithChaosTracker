@@ -327,3 +327,12 @@ body {
 }
 
 .chaos-vignette { animation: vignette-pulse 3s ease-in-out infinite; }
+
+/* ── Game event banner timer ─────────────────────────────────────────────── */
+
+@keyframes event-timer {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+
+.event-timer-bar { animation: event-timer linear forwards; }
